@@ -1,0 +1,18 @@
+{
+    "book_name": "Book Template",
+    "book_slug": "{{ cookiecutter.book_name|lower|replace(' ', '-') }}",
+    "book_description": "{{ cookiecutter.book_name }} is a template repository for creating Jupyter Books",
+    "book_author": "{{ 'Ezequiel Leonardo Castaño'}}",
+    "book_year": "{% now 'utc', '%Y' %}",
+    "book_license": ["MIT", "Apache-2.0", "BSD-3-Clause"],    
+    "book_python_version": ["3.8", "3.7", "3.9"],
+    "github_username": "ELC",
+    "github_repository_name": "jupyter-book-template",
+    "book_repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.github_repository_name }}",
+    "book_url": "https://elc.github.com/jupyter-book-template",
+    "book_google_analytics_tag": "UA-XXXXXXXX-X",
+    "develop_branch": "source",
+    "deployment_branch": "master",
+    "_copy_without_render": ["*analytics.js", "*.css", "frontend*"],
+    "_extensions": ["jinja2_time.TimeExtension"]
+}

@@ -1,0 +1,37 @@
+title: {{ cookiecutter.book_name }}
+copyright: '{{ cookiecutter.book_year }}, {{ cookiecutter.book_author }}'
+author: {{ cookiecutter.book_author }}
+
+execute:
+  execute_notebooks: "force"
+
+html:
+  use_edit_page_button : true
+  use_repository_button: true
+  baseurl              : {{ cookiecutter.book_url }}
+
+repository:
+  url: {{ cookiecutter.book_repository }}
+  branch: source
+
+launch_buttons:
+  binderhub_url: "https://mybinder.org"
+  colab_url    : "https://colab.research.google.com"
+  thebe        : true
+
+latex:
+  latex_documents:
+    targetname: book.tex
+
+parse:
+  myst_enable_extensions:
+    - html_image
+    - dollarmath
+
+
+bibtex_bibfiles:
+  - bibliography.bib
+
+sphinx:
+  config:
+    bibtex_reference_style: author_year

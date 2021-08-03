@@ -1,0 +1,10 @@
+name: jupyter-book-template
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python = {{ cookiecutter.book_python_version }}
+  - pandas >= 1 
+  - seaborn
+  - numpy

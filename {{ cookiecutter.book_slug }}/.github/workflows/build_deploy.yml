@@ -1,0 +1,37 @@
+name: Deploy to Github Pages
+
+
+on:
+  push:
+    branches: {{ cookiecutter.develop_branch }}
+
+  workflow_dispatch:
+  repository_dispatch:
+
+
+jobs:
+  deploy-book:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python {{ cookiecutter.book_python_version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: {{ cookiecutter.book_python_version }}
+
+    - name: Install dependencies
+      run: |
+        pip install wheel
+        pip install jupyter-book
+
+    - name: Build the book
+      run: jb build .
+
+    - name: Deploy to Github Pages
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with:
+        publish_branch: {{ cookiecutter.deployment_branch }}
+        full_commit_message: {{ "${{ github.event.head_commit.message }}" }}
+        github_token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+        publish_dir: _build/html
