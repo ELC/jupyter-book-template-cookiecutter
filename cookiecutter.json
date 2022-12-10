@@ -10,7 +10,7 @@
     "github_repository_name": "jupyter-book-template",
     "book_repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.github_repository_name }}",
     "book_url": "https://elc.github.com/{{ cookiecutter.github_repository_name }}",
-    "book_google_analytics_tag": "UA-XXXXXXXX-X",
+    "book_google_analytics_tag": "G-XXXXXXXX",
     "develop_branch": "source",
     "deployment_branch": "master",
     "_copy_without_render": ["*analytics.js", "*.css", "frontend*"],

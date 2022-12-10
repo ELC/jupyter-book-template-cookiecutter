@@ -1,3 +1,8 @@
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', '{{ cookiecutter.book_google_analytics_tag }}', 'auto');
-ga('send', 'pageview');
+window.dataLayer = window.dataLayer || [];
+
+function gtag() {
+    dataLayer.push(arguments);
+}
+gtag('js', new Date());
+
+gtag('config', '{{ cookiecutter.book_google_analytics_tag }}');
