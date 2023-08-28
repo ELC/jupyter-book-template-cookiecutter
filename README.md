@@ -27,8 +27,7 @@ To use this template, you need to have a freshly created Github Repo and check t
 
 - [ ] Create an empty Repository, the default branch will be the **develop branch**
 - [ ] Enable Github Actions if disable.
-- [ ] Create a secondary branch, this will be the **deployment branch**
-- [ ] Enable GithubPages on the **deployment branch** branch in Settings > Pages.
+- [ ] Enable GithubPages with Source **Github Actions** Settings > Pages.
 - [ ] Clone the repo in your local PC.
 
 ### Step 2: Cut the Cookie

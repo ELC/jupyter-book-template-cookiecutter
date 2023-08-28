@@ -4,7 +4,8 @@ name: Build PDF of the Book
 
 on:
   push:
-    branches: {{ cookiecutter.develop_branch }}
+    branches:
+      - {{ cookiecutter.deployment_branch }}
 
   workflow_dispatch:
   repository_dispatch:
@@ -14,45 +15,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
+      - name: Set up Python {{ cookiecutter.book_python_version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: {{ cookiecutter.book_python_version }}
 
-    - name: Set up Python {{ cookiecutter.book_python_version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: {{ cookiecutter.book_python_version }}
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip pipx
+          git clone https://github.com/executablebooks/jupyter-book.git
+          pipx install -e ./jupyter-book[sphinx,pdflatex]
 
-
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install wheel
-        pushd .
-        cd ..
-        git clone https://github.com/executablebooks/jupyter-book.git
-        cd jupyter-book
-        pip install -e .[sphinx,pdflatex]
-        popd
-
-
-    - name: Install latex dependencies
-      run: |
-        sudo apt-get -qq update
-        sudo apt-get install -y     \
-          texlive-latex-recommended \
-          texlive-latex-extra       \
-          texlive-fonts-extra       \
-          fonts-freefont-otf        \
-          texlive-xetex             \
-          latexmk                   \
+      - name: Install latex dependencies
+        run: >
+          sudo apt-get -qq update &&
+          sudo apt-get install -y
+          texlive-latex-recommended
+          texlive-latex-extra
+          texlive-fonts-extra
+          fonts-freefont-otf
+          texlive-xetex
+          latexmk
           xindy
 
+      - name: Build PDF from LaTeX
+        run: jb build . --builder pdflatex
 
-    - name: Build PDF from LaTeX
-      run: jb build . --builder pdflatex
-
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Book PDF
-        path: _build/latex/book.pdf
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Book PDF
+          path: _build/latex/book.pdf

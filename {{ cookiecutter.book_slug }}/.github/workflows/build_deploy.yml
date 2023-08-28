@@ -1,37 +1,58 @@
-name: Deploy to Github Pages
-
+name: Deploy Jupyter Book to Github Pages
 
 on:
   push:
-    branches: {{ cookiecutter.develop_branch }}
+    branches:
+      - {{ cookiecutter.deployment_branch }}
 
   workflow_dispatch:
   repository_dispatch:
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  deploy-book:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Set up Python {{ cookiecutter.book_python_version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: {{ cookiecutter.book_python_version }}
+      - name: Set up Python {{ cookiecutter.book_python_version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: {{ cookiecutter.book_python_version }}
 
-    - name: Install dependencies
-      run: |
-        pip install wheel
-        pip install jupyter-book
+      - name: Install dependencies
+        run: |
+          pip install wheel
+          pip install jupyter-book
 
-    - name: Build the book
-      run: jb build .
+      - name: Build the book
+        run: jb build .
 
-    - name: Deploy to Github Pages
-      uses: peaceiris/actions-gh-pages@v3.6.1
-      with:
-        publish_branch: {{ cookiecutter.deployment_branch }}
-        full_commit_message: {{ "${{ github.event.head_commit.message }}" }}
-        github_token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
-        publish_dir: _build/html
+      - name: Rename Output to _site
+        run: mv _build/html ./_site
+
+      - name: Add a nojekyll file
+        run: touch _site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

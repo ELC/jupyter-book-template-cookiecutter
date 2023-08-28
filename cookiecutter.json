@@ -11,7 +11,7 @@
     "book_repository": "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.github_repository_name }}",
     "book_url": "https://{{ cookiecutter.github_username }}.github.io/{{ cookiecutter.github_repository_name }}",
     "book_google_analytics_tag": "G-XXXXXXXX",
-    "develop_branch": "source",
+    "develop_branch": "develop",
     "deployment_branch": "master",
     "_copy_without_render": ["*analytics.js", "*.css", "frontend*"],
     "_extensions": ["jinja2_time.TimeExtension"]
